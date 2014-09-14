@@ -2,32 +2,42 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required, login_required
+from django.core.urlresolvers import reverse
 
+# school views
 
-def login_view(request):
-    context = {'test': 'not logged'}
-    
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                context = {'test': 'test'}
-    if request.user.is_authenticated():
-        context = {'test': 'logged as %s' % request.user}
+@login_required
+def index(request):
+    group = request.user.groups.all()[0].name
+    if group == 'teacher':
+        return redirect(reverse('school_t_panel'))
+    if group == 'student':
+        return redirect(reverse('school_s_panel'))
 
-    tmpl = 'school/index.html'
-    if ('next' in request.GET) and request.user.is_authenticated():
-        return redirect(request.GET['next'])
-    return render (request, tmpl, context) 
+@login_required(login_url='/auth/login')
+def student_panel(request):
+    user = request.user
+    occup = user.groups.all()[0]
+    message = "hello {} you are {}".format(user, occup)
+    return HttpResponse(message) 
 
-def logout_view(request):
-    logout(request)
-    return redirect('/')
-
-@login_required(login_url='/')
 @permission_required('school.view_admin', raise_exception=True)
-def test_dec(request):
-    return HttpResponse('dec op')
+@login_required(login_url='/auth/login')
+def teacher_panel(request):
+    user = request.user
+    occup = user.groups.all()[0]
+    message = "hello {} you are {}".format(user, occup)
+    return HttpResponse(message) 
+
+
+@permission_required('school.view_admin', raise_exception=True)
+@login_required(login_url='/auth/login')
+def create_student(request):
+    pass
+
+@permission_required('school.view_admin', raise_exception=True)
+@login_required(login_url='/auth/login')
+def create_lesson(request):
+    pass
+
+
