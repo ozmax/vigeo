@@ -19,7 +19,6 @@ def login_view(request):
         context = {'test': 'logged as %s' % request.user}
 
     tmpl = 'school/index.html'
-    print request.GET
     if ('next' in request.GET) and request.user.is_authenticated():
         return redirect(request.GET['next'])
     return render (request, tmpl, context) 
