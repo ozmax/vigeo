@@ -11,10 +11,10 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                if ('next' in request.GET) and request.user.is_authenticated():
+                    return redirect(request.GET['next'])
                 return redirect('/school/index')
     tmpl = 'school/index.html'
-    if ('next' in request.GET) and request.user.is_authenticated():
-        return redirect(request.GET['next'])
     return render (request, tmpl, {}) 
 
 def logout_view(request):
