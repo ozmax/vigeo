@@ -14,7 +14,7 @@ def login_view(request):
                 if ('next' in request.GET) and request.user.is_authenticated():
                     return redirect(request.GET['next'])
                 return redirect(reverse('school_index'))
-    tmpl = 'school/index.html'
+    tmpl = 'auth/index.html'
     return render (request, tmpl, {}) 
 
 def logout_view(request):
