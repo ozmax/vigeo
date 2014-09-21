@@ -28,8 +28,8 @@ def teacher_panel(request):
     tmpl = 'school/index.html'
     return render(request, tmpl, {}) 
 
-@permission_required('school.view_admin', raise_exception=True)
 @login_required(login_url='/auth/login')
+@permission_required('school.view_admin', raise_exception=True)
 def add_category(request):
     form = CategoryForm(request.POST or None)
     if form.is_valid():
@@ -40,8 +40,8 @@ def add_category(request):
     tmpl = 'school/category.html'
     return render(request, tmpl, context)
 
-@permission_required('school.view_admin', raise_exception=True)
 @login_required(login_url='/auth/login')
+@permission_required('school.view_admin', raise_exception=True)
 def create_student(request):
     form = StudentForm(request.POST or None)
     if form.is_valid():
@@ -50,8 +50,8 @@ def create_student(request):
     tmpl = 'school/register.html'
     return render(request, tmpl, context)
 
-@permission_required('school.view_admin', raise_exception=True)
 @login_required(login_url='/auth/login')
+@permission_required('school.view_admin', raise_exception=True)
 def add_lesson(request):
     form = LessonForm(request.POST or None)
     if form.is_valid():
@@ -61,8 +61,8 @@ def add_lesson(request):
     tmpl = 'school/lesson.html'
     return render(request, tmpl, context)
 
-@permission_required('school.view_admin', raise_exception=True)
 @login_required(login_url='/auth/login')
+@permission_required('school.view_admin', raise_exception=True)
 def add_question(request):
     form = QuestionForm(request.POST or None)
     if form.is_valid():
