@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, widgets
 from django.contrib.auth.models import Group
 
-from school.models import Student, Lesson, Category
+from school.models import Student, Lesson, Category, Question
+
 
 class StudentForm(ModelForm):
 
@@ -28,7 +29,14 @@ class LessonForm(ModelForm):
     class Meta:
         model = Lesson
 
+
 class CategoryForm(ModelForm):
     
     class Meta:
         model = Category
+
+
+class QuestionForm(ModelForm):
+    
+    class Meta:
+        model = Question

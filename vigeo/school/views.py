@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse
 
-from school.forms import StudentForm, LessonForm, CategoryForm
+from school.forms import StudentForm, LessonForm, CategoryForm, QuestionForm
 
 
 @login_required
@@ -25,10 +25,8 @@ def student_panel(request):
 @login_required(login_url='/auth/login')
 @permission_required('school.view_admin', raise_exception=True)
 def teacher_panel(request):
-    user = request.user
-    occup = user.groups.all()[0]
-    message = "hello {} you are {}".format(user, occup)
-    return HttpResponse(message) 
+    tmpl = 'school/index.html'
+    return render(request, tmpl, {}) 
 
 @permission_required('school.view_admin', raise_exception=True)
 @login_required(login_url='/auth/login')
@@ -62,3 +60,15 @@ def add_lesson(request):
     context = {'form': form}
     tmpl = 'school/lesson.html'
     return render(request, tmpl, context)
+
+@permission_required('school.view_admin', raise_exception=True)
+@login_required(login_url='/auth/login')
+def add_question(request):
+    form = QuestionForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('school_index'))
+    context = {'form': form}
+    tmpl = 'school/question.html'
+    return render(request, tmpl, context)
+
