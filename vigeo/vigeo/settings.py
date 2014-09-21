@@ -21,7 +21,7 @@ SECRET_KEY = 'xl=r2_us#zhn)65gs5odq5-##d2xxqiq(xj-(v=d$_vhqoi+73'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'vigeo/templates'),)
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'school',
+    'auth',
 )
 
 MIDDLEWARE_CLASSES = (
