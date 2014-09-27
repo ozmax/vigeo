@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
-from django.forms import ModelForm, widgets
-
+from django.forms import ModelForm, Form, widgets, RadioSelect
+from django import forms
 from school.models import Student, Lesson, Category, Question
 
 
@@ -49,3 +49,20 @@ class QuestionForm(ModelForm):
     
     class Meta:
         model = Question
+
+
+class QuizForm(Form):
+    
+    def __init__(self, *args, **kwargs):
+        super(QuizForm, self).__init__(*args, **kwargs)
+        object_list = Question.objects.all().order_by('?')[:10]
+        for q in object_list:
+            CHOICES = (
+                (q.correct_answer, q.correct_answer),
+                (q.possible_answer0, q.possible_answer0),
+                (q.possible_answer1, q.possible_answer1)
+                )
+            self.fields[q.title] =\
+                forms.ChoiceField(choices=CHOICES,widget=widgets.RadioSelect())
+        
+    
