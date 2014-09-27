@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse
 
-from school.forms import StudentForm, LessonForm, CategoryForm, QuestionForm
+from school.forms import StudentForm, LessonForm, CategoryForm, QuestionForm,\
+    QuizForm
+from school.models import Lesson
 
 
-@login_required
+@login_required(login_url='/auth/login')
 def index(request):
     group = request.user.groups.all()[0].name
     if group == 'teacher':
@@ -15,17 +17,10 @@ def index(request):
     if group == 'student':
         return redirect(reverse('school_s_panel'))
 
-@login_required
-def student_panel(request):
-    user = request.user
-    occup = user.groups.all()[0]
-    message = "hello {} you are {}".format(user, occup)
-    return HttpResponse(message) 
-
 @login_required(login_url='/auth/login')
 @permission_required('school.view_admin', raise_exception=True)
 def teacher_panel(request):
-    tmpl = 'school/index.html'
+    tmpl = 'school/t_index.html'
     return render(request, tmpl, {}) 
 
 @login_required(login_url='/auth/login')
@@ -72,3 +67,37 @@ def add_question(request):
     tmpl = 'school/question.html'
     return render(request, tmpl, context)
 
+@login_required(login_url='/auth/login')
+@login_required
+def student_panel(request):
+    tmpl = 'school/s_index.html'
+    return render(request, tmpl, {})
+
+
+@login_required(login_url='/auth/login')
+def lesson_menu(request):
+    lessons = Lesson.objects.all()
+    context = {'lessons': lessons}
+    tmpl = 'school/lesson_menu.html'
+    return render(request, tmpl, context)
+
+@login_required(login_url='/auth/login')
+def lesson_detail(request):
+    try:
+        lesson_id = request.GET['lesson_id']
+    except:
+        lesson_id = None
+    if lesson_id:
+        lesson = Lesson.objects.get(id=lesson_id)
+    else:
+        lesson = None
+    context = {'lesson': lesson}
+    tmpl = 'school/lesson_detail.html'
+    return render(request, tmpl, context)
+
+@login_required(login_url='/auth/login')
+def take_test(request):
+    form = QuizForm()
+    tmpl = 'school/quiz.html'
+    context = {'form': form}
+    return render(request, tmpl, context)

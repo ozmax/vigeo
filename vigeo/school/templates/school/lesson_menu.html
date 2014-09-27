@@ -1,0 +1,8 @@
+{% include "school/student_nav.html"%}
+<br />
+{% for lesson in lessons %}
+    {{lesson.title}}
+    <br />
+{% empty %}
+    No lessons available
+{% endfor %}
