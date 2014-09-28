@@ -1,15 +1,14 @@
 from django.contrib.auth.models import User, Group
-from django.forms import ModelForm, Form, widgets, RadioSelect
 from django import forms
 from school.models import Student, Lesson, Category, Question
 
 
-class StudentForm(ModelForm):
+class StudentForm(forms.ModelForm):
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'password', 'email']
-        widgets = {'password': widgets.PasswordInput()}
+        widgets = {'password': forms.widgets.PasswordInput()}
 
 
     def __init__(self, *args, **kwargs):
@@ -33,25 +32,25 @@ class StudentForm(ModelForm):
         Student.objects.create(user_id=user.id)
 
 
-class LessonForm(ModelForm):
+class LessonForm(forms.ModelForm):
     
     class Meta:
         model = Lesson
 
 
-class CategoryForm(ModelForm):
+class CategoryForm(forms.ModelForm):
     
     class Meta:
         model = Category
 
 
-class QuestionForm(ModelForm):
+class QuestionForm(forms.ModelForm):
     
     class Meta:
         model = Question
 
 
-class QuizForm(Form):
+class QuizForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(QuizForm, self).__init__(*args, **kwargs)
@@ -63,6 +62,6 @@ class QuizForm(Form):
                 (q.possible_answer1, q.possible_answer1)
                 )
             self.fields[q.title] =\
-                forms.ChoiceField(choices=CHOICES,widget=widgets.RadioSelect())
+                forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
         
     
