@@ -53,15 +53,38 @@ class QuestionForm(forms.ModelForm):
 class QuizForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
+        self.question_nr = 3
+        keys = kwargs.pop('keys', None)
+        arakse = kwargs.pop('f_nr', None)
         super(QuizForm, self).__init__(*args, **kwargs)
-        object_list = Question.objects.all().order_by('?')[:10]
-        for q in object_list:
-            CHOICES = (
-                (q.correct_answer, q.correct_answer),
-                (q.possible_answer0, q.possible_answer0),
-                (q.possible_answer1, q.possible_answer1)
-                )
-            self.fields[q.title] =\
-                forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
+        if not keys:
+            object_list = Question.objects.all().order_by('?')[:self.question_nr]
+            for q in object_list:
+                CHOICES = (
+                    (q.correct_answer, q.correct_answer),
+                    (q.possible_answer0, q.possible_answer0),
+                    (q.possible_answer1, q.possible_answer1)
+                    )
+                self.fields[q.title] =\
+                    forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
+        else:
+            print keys
+            self.current_nr = len(keys)
+
+            for key in keys:
+                q = Question.objects.get(title=key)
+                CHOICES = (
+                    (q.correct_answer, q.correct_answer),
+                    (q.possible_answer0, q.possible_answer0),
+                    (q.possible_answer1, q.possible_answer1)
+                    )
+                self.fields[q.title] =\
+                    forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
         
-    
+    def clean(self):
+        print self.current_nr
+        print 'was here'
+        if self.current_nr != self.question_nr:
+            msg = 'foobar'
+            raise forms.ValidationError(msg)
+        return f_nr
