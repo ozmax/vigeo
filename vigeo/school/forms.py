@@ -1,3 +1,5 @@
+from random import shuffle
+
 from django.contrib.auth.models import User, Group
 from django import forms
 from school.models import Student, Lesson, Category, Question
@@ -54,37 +56,32 @@ class QuizForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         self.question_nr = 3
-        keys = kwargs.pop('keys', None)
-        arakse = kwargs.pop('f_nr', None)
+        q_ids = kwargs.pop('q_ids', None)
         super(QuizForm, self).__init__(*args, **kwargs)
-        if not keys:
+        if q_ids == None:
             object_list = Question.objects.all().order_by('?')[:self.question_nr]
+            q_ids = []
             for q in object_list:
-                CHOICES = (
+                q_ids.append(q.id)
+                CHOICES = [ 
                     (q.correct_answer, q.correct_answer),
                     (q.possible_answer0, q.possible_answer0),
                     (q.possible_answer1, q.possible_answer1)
-                    )
+                    ]
+                shuffle(CHOICES)
                 self.fields[q.title] =\
                     forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
+            self.fields['qs'] = forms.CharField(widget=forms.HiddenInput(),initial=str(q_ids))
         else:
-            print keys
-            self.current_nr = len(keys)
 
-            for key in keys:
-                q = Question.objects.get(title=key)
-                CHOICES = (
+            for qid in q_ids:
+                q = Question.objects.get(id=qid)
+                CHOICES = [
                     (q.correct_answer, q.correct_answer),
                     (q.possible_answer0, q.possible_answer0),
                     (q.possible_answer1, q.possible_answer1)
-                    )
+                    ]
+                shuffle(CHOICES)
                 self.fields[q.title] =\
-                    forms.ChoiceField(choices=CHOICES,widget=forms.widgets.RadioSelect())
-        
-    def clean(self):
-        print self.current_nr
-        print 'was here'
-        if self.current_nr != self.question_nr:
-            msg = 'foobar'
-            raise forms.ValidationError(msg)
-        return f_nr
+                    forms.ChoiceField(required=True, choices=CHOICES,widget=forms.widgets.RadioSelect())
+            self.fields['qs'] = forms.CharField(widget=forms.HiddenInput(),initial=str(q_ids))

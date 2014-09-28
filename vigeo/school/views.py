@@ -107,12 +107,10 @@ def lesson_detail(request):
 @login_required(login_url='/auth/login')
 def take_test(request):
     if request.method == 'POST':
-        print request.POST
-        keys = []
-        for key in request.POST.keys():
-            if key !=  u'csrfmiddlewaretoken':
-                keys.append(key)
-        form = QuizForm(request.POST, keys=keys)
+        q_ids = request.POST['qs']
+        q_ids = q_ids[1:-1].split(',')
+        q_ids = map(int, q_ids)
+        form = QuizForm(request.POST, q_ids=q_ids)
         if form.is_valid():
             print 'yea'
             return redirect(reverse('school_index'))
