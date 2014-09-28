@@ -1,8 +1,17 @@
-{% include "school/student_nav.html"%}
-<br />
-{% for lesson in lessons %}
-    {{lesson.title}}
+{% extends "school/base.html" %}
+
+{% block content%}
+    {% for lesson in lessons %}
+        <a href="{% url "school_detailed_lesson" %}?lesson_id={{lesson.id}}&cat_id={{ cat_id }}">
+            {{ lesson.title }}
+        </a>
+        <br />
+        <br />
+    {% empty %}
+        <b>Δεν υπάρχουν διαθέσιμα μαθήματα σε αυτή την κατηγορία</b>
+    {% endfor %}
     <br />
-{% empty %}
-    No lessons available
-{% endfor %}
+    <br />
+    <a href="{% url "school_category_menu" %}">Πίσω</a>
+
+{% endblock %}

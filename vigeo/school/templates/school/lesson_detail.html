@@ -1,2 +1,8 @@
-{{lesson.title}}<br />
-{{lesson.content}}
+{% extends "school/base.html" %}
+
+{% block content%}
+<b>{{lesson.title}}</b><br />
+<br />{{ lesson.content|linebreaksbr }}
+<br /><br />
+<a href="{% url "school_lesson_menu" %}?cat_id={{ cat_id }}">Πίσω</a>
+{% endblock %}

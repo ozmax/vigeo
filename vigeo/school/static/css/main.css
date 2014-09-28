@@ -1,6 +1,6 @@
 html { background: transparent }
 body {
-    background-image: url("../images/mountain-wallpaper-widescreen.jpg");
+    background-image: url("/static/images/mountain.jpg");
 	background-repeat: no-repeat;
 	background-size: 100%;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif

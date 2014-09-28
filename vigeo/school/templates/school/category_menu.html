@@ -1,0 +1,13 @@
+{% extends "school/base.html" %}
+
+{% block content%}
+<b>Κατηγορίες Μαθημάτων</b>
+    <br />
+    {% for category in categories %}
+        <a href="{% url "school_lesson_menu" %}?cat_id={{ category.id }}">{{ category.name }}</a>
+        <br />
+        <br />
+    {% empty %}
+        No categories available
+    {% endfor %}
+{% endblock %}

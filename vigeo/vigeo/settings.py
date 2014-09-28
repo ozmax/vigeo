@@ -26,6 +26,10 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.request',
+                               'django.contrib.auth.context_processors.auth',
+                               'django.contrib.messages.context_processors.messages')
+
 
 # Application definition
 
@@ -49,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
 
 ROOT_URLCONF = 'vigeo.urls'
 

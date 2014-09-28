@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from school.forms import StudentForm, LessonForm, CategoryForm, QuestionForm,\
     QuizForm
-from school.models import Lesson
+from school.models import Lesson, Category
 
 
 @login_required(login_url='/auth/login')
@@ -70,28 +70,37 @@ def add_question(request):
 @login_required(login_url='/auth/login')
 @login_required
 def student_panel(request):
-    tmpl = 'school/s_index.html'
+    tmpl = 'school/student_main.html'
     return render(request, tmpl, {})
+
+@login_required(login_url='/auth/login')
+def category_menu(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    tmpl = 'school/category_menu.html'
+    return render(request, tmpl, context)
 
 
 @login_required(login_url='/auth/login')
 def lesson_menu(request):
-    lessons = Lesson.objects.all()
-    context = {'lessons': lessons}
+    cat_id = request.GET.get('cat_id')
+    if cat_id:
+        lessons = Lesson.objects.filter(category=cat_id)
+    else:
+        lessons = None
+    context = {'lessons': lessons, 'cat_id': cat_id}
     tmpl = 'school/lesson_menu.html'
     return render(request, tmpl, context)
 
 @login_required(login_url='/auth/login')
 def lesson_detail(request):
-    try:
-        lesson_id = request.GET['lesson_id']
-    except:
-        lesson_id = None
+    lesson_id = request.GET.get('lesson_id')
+    cat_id = request.GET.get('cat_id')
     if lesson_id:
         lesson = Lesson.objects.get(id=lesson_id)
     else:
         lesson = None
-    context = {'lesson': lesson}
+    context = {'lesson': lesson, 'cat_id': cat_id}
     tmpl = 'school/lesson_detail.html'
     return render(request, tmpl, context)
 
