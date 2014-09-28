@@ -1,8 +1,9 @@
 {% extends "school/base.html" %}
 
 {% block content%}
-<b>{{lesson.title}}</b><br />
-<br />{{ lesson.content|linebreaksbr }}
+<h2 style="text-align:left">{{lesson.title}}</h2>
+<hr style="border-color: #333333">
+<br /><p style="text-align: justify; font-size:18px ">{{ lesson.content|linebreaksbr }}</p>
 <br /><br />
-<a href="{% url "school_lesson_menu" %}?cat_id={{ cat_id }}">Πίσω</a>
+<a href="{% url "school_lesson_menu" %}?cat_id={{ cat_id }}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Πίσω</a>
 {% endblock %}

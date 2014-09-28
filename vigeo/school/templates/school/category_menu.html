@@ -1,10 +1,11 @@
 {% extends "school/base.html" %}
 
 {% block content%}
-<b>Κατηγορίες Μαθημάτων</b>
+<h2>Κατηγορίες Μαθημάτων</h2>
+    <br />
     <br />
     {% for category in categories %}
-        <a href="{% url "school_lesson_menu" %}?cat_id={{ category.id }}">{{ category.name }}</a>
+       <h2><span class="label label-info"><a style="color:white" href="{% url "school_lesson_menu" %}?cat_id={{ category.id }}">{{ category.name }}</a>&nbsp&nbsp<span class="badge">42</span></span></h2>
         <br />
         <br />
     {% empty %}

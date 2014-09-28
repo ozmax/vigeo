@@ -1,17 +1,24 @@
 {% extends "school/base.html" %}
 
 {% block content%}
+ <div class="panel panel-info">
+	  <div class="panel-heading">
+              <h3 class="panel-title">Κατηγορια</h3>
+              </div><br/>
     {% for lesson in lessons %}
-        <a href="{% url "school_detailed_lesson" %}?lesson_id={{lesson.id}}&cat_id={{ cat_id }}">
+    
+               <h2><span class="label label-info"><a style="color:white" href="{% url "school_detailed_lesson" %}?lesson_id={{lesson.id}}&cat_id={{ cat_id }}">
             {{ lesson.title }}
-        </a>
+        </a>&nbsp&nbsp</span></h2>
+
         <br />
         <br />
     {% empty %}
         <b>Δεν υπάρχουν διαθέσιμα μαθήματα σε αυτή την κατηγορία</b>
     {% endfor %}
-    <br />
-    <br />
-    <a href="{% url "school_category_menu" %}">Πίσω</a>
+     <div class="panel panel-default">
+		 <br/>
+    <a href="{% url "school_category_menu" %}"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Πίσω</a>
+		<br/><br/>
 
 {% endblock %}
