@@ -1,6 +1,9 @@
-{% include "school/teacher_nav.html"%}
+{% extends "school/t_base.html"%}
+
+{% block content %}
 <form action="" method="POST">
 {% csrf_token %}
 {{form.as_p}}
 <input type="submit">
 </form>
+{% endblock %}
