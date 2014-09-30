@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from random import shuffle
 
 from django.contrib.auth.models import User, Group
@@ -55,7 +56,7 @@ class QuestionForm(forms.ModelForm):
 class QuizForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
-        self.question_nr = 3
+        self.question_nr = 8 
         q_ids = kwargs.pop('q_ids', None)
         super(QuizForm, self).__init__(*args, **kwargs)
         if q_ids == None:

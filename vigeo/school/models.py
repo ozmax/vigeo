@@ -12,10 +12,10 @@ class Lesson(models.Model):
     category = models.ForeignKey(Category)
     title = models.CharField(max_length=100)
     content = models.TextField()
-    
+    '''    
     def __unicode__(self):
         return self.title
-
+    '''
 
 class Question(models.Model):
     
@@ -28,7 +28,7 @@ class Question(models.Model):
     correct_answer = models.CharField(max_length=100)
     possible_answer0 = models.CharField(max_length=100)
     possible_answer1 = models.CharField(max_length=100)
-
+    
     def __unicode__(self):
         return self.title
 

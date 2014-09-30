@@ -1,8 +1,8 @@
 {% extends "school/t_base.html" %}
 {% block content %}
 <form action="" method="POST">
-{% csrf_token %}
 {{form.as_p}}
+{% csrf_token %}
 <input type="submit">
 </form>
 {% endblock %}
